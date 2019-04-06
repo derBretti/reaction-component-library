@@ -102,6 +102,10 @@ class CartSummary extends Component {
      */
     displayDiscount: PropTypes.string,
     /**
+     * Total amount without taxes
+     */
+    displayNet: PropTypes.string,
+    /**
      * Shipping cost
      */
     displayShipping: PropTypes.string,
@@ -164,10 +168,22 @@ class CartSummary extends Component {
     );
   }
 
+  renderNet() {
+    const { displayNet, isDense } = this.props;
+
+    return (
+      <tr>
+        <TdTotal isDense={isDense} isBordered>Total (excl. taxes):</TdTotal>
+        <TdTotalValue isDense={isDense} isBordered>{displayNet}</TdTotalValue>
+      </tr>
+    );
+  }
+
   render() {
     const {
       className,
       displayDiscount,
+      displayNet,
       displayShipping,
       displaySubtotal,
       displaySurcharge,
@@ -183,6 +199,7 @@ class CartSummary extends Component {
     const header = !isDense && this.renderHeader();
     const discount = displayDiscount && this.renderDiscount();
     const surcharge = displaySurcharge || "-";
+    const net = displayNet && this.renderNet();
 
     return (
       <Table className={className} isDense={isDense}>
@@ -201,6 +218,7 @@ class CartSummary extends Component {
             <Td isDense={isDense}>Surcharges:</Td>
             <TdValue isDense={isDense}>{surcharge}</TdValue>
           </tr>
+          {net}
           <tr>
             <TdTax isDense={isDense}>Tax:</TdTax>
             <TdTaxValue isDense={isDense}>{tax}</TdTaxValue>

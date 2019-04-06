@@ -48,6 +48,10 @@ class FinalReviewCheckoutAction extends Component {
        */
       displayDiscount: PropTypes.string,
       /**
+       * Total amount without taxes
+       */
+      displayNet: PropTypes.string,
+      /**
        * Shipping cost
        */
       displayShipping: PropTypes.string,
@@ -139,6 +143,7 @@ class FinalReviewCheckoutAction extends Component {
     const {
       checkoutSummary: {
         displayDiscount,
+        displayNet,
         displayShipping,
         displaySubtotal,
         displaySurcharge,
@@ -172,6 +177,7 @@ class FinalReviewCheckoutAction extends Component {
             <CartSummary
               isDense
               displayDiscount={displayDiscount}
+              displayNet={displayNet}
               displayShipping={displayShipping}
               displaySubtotal={displaySubtotal}
               displaySurcharge={displaySurcharge}
