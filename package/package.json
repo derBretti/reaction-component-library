@@ -15,9 +15,9 @@
   "scripts": {
     "prebuild": "rimraf dist && rimraf dist-modules-temp && node ./scripts/prebuild.js",
     "build": "npm run build:common && npm run build:modules",
-    "build:common": "BABEL_ENV=production babel --root-mode upward src --out-dir dist",
-    "build:modules": "BABEL_ENV=production BABEL_MODULES=1 babel --root-mode upward src --out-dir dist-modules-temp",
-    "postbuild": "BABEL_ENV=production babel-node --root-mode upward ./scripts/postbuild.js",
+    "build:common": "SET BABEL_ENV=production && babel --root-mode upward src --out-dir dist",
+    "build:modules": "SET BABEL_ENV=production BABEL_MODULES=1 && babel --root-mode upward src --out-dir dist-modules-temp",
+    "postbuild": "SET BABEL_ENV=production && babel-node --root-mode upward ./scripts/postbuild.js",
     "release": "npm run build && npm publish dist"
   },
   "dependencies": {
