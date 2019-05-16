@@ -165,13 +165,13 @@ class MiniCart extends Component {
           <CartItems items={items} {...props} isMiniCart />
         </Items>
         <Footer count={items.length}>
-          <MiniCartSummary displaySubtotal={summary.itemTotal.displayAmount} />
+          <MiniCartSummary displaySubtotal={summary.total.displayAmount} />
           {(CartCheckoutButton && <CartCheckoutButton onClick={onCheckoutButtonClick} />) || (
             <Button actionType="important" isFullWidth onClick={onCheckoutButtonClick}>
               Checkout
             </Button>
           )}
-          <FooterMessage>Shipping and tax calculated in checkout</FooterMessage>
+          <FooterMessage>Shipping and tax might be adjusted in checkout</FooterMessage>
         </Footer>
       </Cart>
     );
