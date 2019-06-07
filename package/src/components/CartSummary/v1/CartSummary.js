@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { addTypographyStyles, applyTheme } from "../../../utils";
+import { addTypographyStyles, applyTheme, taxLabel } from "../../../utils";
 
 const Table = styled.table`
   width: 100%;
@@ -136,7 +136,44 @@ class CartSummary extends Component {
     /**
      * Quantity of products in shopping cart
      */
-    itemsQuantity: PropTypes.number
+    itemsQuantity: PropTypes.number,
+    /**
+     * Individual taxes
+     */
+    taxes: PropTypes.arrayOf(PropTypes.shape({
+      tax: PropTypes.shape({
+        /**
+         * The display tax amount
+         */
+        displayAmount: PropTypes.string.isRequired
+      }).isRequired,
+      /**
+       * A readale name for the tax
+       */
+      taxName: PropTypes.string,
+      sourcing: PropTypes.oneOf(["destination", "origin"]),
+      /**
+       * The postal code
+       */
+      postal: PropTypes.string,
+      /**
+       * Code of the region or state
+       */
+      region: PropTypes.string,
+      /**
+       * The two letter ISO code of the country
+       */
+      country: PropTypes.string,
+      /**
+       * The tax rate
+       */
+      taxRate: PropTypes.shape({
+        /**
+         * The display tax amount
+         */
+        percent: PropTypes.number.isRequired
+      })
+    }))
   }
 
   renderHeader() {
@@ -179,6 +216,27 @@ class CartSummary extends Component {
     );
   }
 
+  renderTaxes() {
+    const { isDense, displayTax, taxes } = this.props;
+    if (taxes) {
+      return (
+        <>
+          {taxes.map((tax) => <tr key={tax._id} >
+            <TdTax isDense={isDense}>{taxLabel(tax)}:</TdTax>
+            <TdTaxValue isDense={isDense}>{tax.tax.displayAmount}</TdTaxValue>
+          </tr>)}
+        </>
+      );
+    }
+    const tax = displayTax || "-";
+    return (
+      <tr>
+        <TdTax isDense={isDense}>Tax:</TdTax>
+        <TdTaxValue isDense={isDense}>{tax}</TdTaxValue>
+      </tr>
+    );
+  }
+
   render() {
     const {
       className,
@@ -187,7 +245,6 @@ class CartSummary extends Component {
       displayShipping,
       displaySubtotal,
       displaySurcharge,
-      displayTax,
       displayTotal,
       isDense,
       isFreeShipping
@@ -195,7 +252,7 @@ class CartSummary extends Component {
 
     // Use "-" to indicate we are still calculating this field.
     const shipping = (isFreeShipping ? "FREE" : displayShipping) || "-";
-    const tax = displayTax || "-";
+    const displayTaxes = this.renderTaxes();
     const header = !isDense && this.renderHeader();
     const discount = displayDiscount && this.renderDiscount();
     const surcharge = displaySurcharge || "-";
@@ -219,10 +276,7 @@ class CartSummary extends Component {
             <TdValue isDense={isDense}>{surcharge}</TdValue>
           </tr>
           {net}
-          <tr>
-            <TdTax isDense={isDense}>Tax:</TdTax>
-            <TdTaxValue isDense={isDense}>{tax}</TdTaxValue>
-          </tr>
+          {displayTaxes}
           <tr>
             <TdTotal isDense={isDense} isBordered>Order total:</TdTotal>
             <TdTotalValue isDense={isDense} isBordered>

@@ -78,7 +78,11 @@ class FinalReviewCheckoutAction extends Component {
       /**
        * CartItem data. This is passed to CartItems, which may require some props.
        */
-      items: PropTypes.arrayOf(PropTypes.object).isRequired
+      items: PropTypes.arrayOf(PropTypes.object).isRequired,
+      /**
+       * Individual taxes
+       */
+      taxes: PropTypes.arrayOf(PropTypes.object)
     }),
     /**
      * If you've set up a components context using
@@ -149,7 +153,8 @@ class FinalReviewCheckoutAction extends Component {
         displaySurcharge,
         displayTax,
         displayTotal,
-        items
+        items,
+        taxes
       },
       components: {
         CartItems,
@@ -183,6 +188,7 @@ class FinalReviewCheckoutAction extends Component {
               displaySurcharge={displaySurcharge}
               displayTax={displayTax}
               displayTotal={displayTotal}
+              taxes={taxes}
             />
           </CartSummaryWrapper>
         </Summary>
